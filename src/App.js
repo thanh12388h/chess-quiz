@@ -486,20 +486,24 @@ export default function App() {
   const answered = selected !== null;
 
   // Global 30-min countdown
-  useEffect(() => {
-    if (screen !== "game") return;
-    if (timeLeft <= 0) { finishGame(); return; }
-    const t = setInterval(() => setTimeLeft(x => x - 1), 1000);
-    return () => clearInterval(t);
-  }, [screen, timeLeft]);
+useEffect(() => {
+  if (screen !== "game") return;
+  if (timeLeft <= 0) { finishGame(); return; }
+
+  const t = setInterval(() => setTimeLeft(x => x - 1), 1000);
+
+  return () => clearInterval(t);
+}, [screen, timeLeft, finishGame]);
 
   // Per-question 30s countdown
-  useEffect(() => {
-    if (screen !== "game" || answered) return;
-    if (qTimer <= 0) { handleAnswer(null); return; }
-    const t = setInterval(() => setQTimer(x => x - 1), 1000);
-    return () => clearInterval(t);
-  }, [screen, qTimer, answered]);
+useEffect(() => {
+  if (screen !== "game" || answered) return;
+  if (qTimer <= 0) { handleAnswer(null); return; }
+
+  const t = setInterval(() => setQTimer(x => x - 1), 1000);
+
+  return () => clearInterval(t);
+}, [screen, qTimer, answered, handleAnswer]);
 
   function startGame(name) {
     setPlayerName(name);
@@ -507,7 +511,7 @@ export default function App() {
     startTime.current = Date.now();
   }
 
-  function handleAnswer(choice) {
+const handleAnswer = useCallback((choice) => {
     setSelected(choice ?? "__timeout__");
     let pts = 0;
     if (choice === q.correct) {
@@ -517,7 +521,7 @@ export default function App() {
     }
     setPointsEarned(pts);
     setScore(s => s + pts);
-  }
+  }, [q, qTimer]);
 
   function nextQuestion() {
     if (qIndex + 1 >= QUESTIONS.length) { finishGame(); return; }
@@ -527,7 +531,7 @@ export default function App() {
     setQTimer(30);
   }
 
-  function finishGame() {
+const finishGame = useCallback(() => {
     const elapsed = Math.round((Date.now() - startTime.current) / 1000);
     const finalScore = score;
     setLeaderboard(prev => {
@@ -535,7 +539,7 @@ export default function App() {
       return [...next, { name: playerName, score: finalScore, elapsed }];
     });
     setScreen("result");
-  }
+  }, [score, playerName]);
 
   function replay() {
     setScreen("login");
