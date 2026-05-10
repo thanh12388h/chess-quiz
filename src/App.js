@@ -486,24 +486,20 @@ export default function App() {
   const answered = selected !== null;
 
   // Global 30-min countdown
-useEffect(() => {
-  if (screen !== "game") return;
-  if (timeLeft <= 0) { finishGame(); return; }
-
-  const t = setInterval(() => setTimeLeft(x => x - 1), 1000);
-
-  return () => clearInterval(t);
-}, [screen, timeLeft, finishGame]);
+  useEffect(() => {
+    if (screen !== "game") return;
+    if (timeLeft <= 0) { finishGame(); return; }
+    const t = setInterval(() => setTimeLeft(x => x - 1), 1000);
+    return () => clearInterval(t);
+  }, [screen, timeLeft]);
 
   // Per-question 30s countdown
-useEffect(() => {
-  if (screen !== "game" || answered) return;
-  if (qTimer <= 0) { handleAnswer(null); return; }
-
-  const t = setInterval(() => setQTimer(x => x - 1), 1000);
-
-  return () => clearInterval(t);
-}, [screen, qTimer, answered, handleAnswer]);
+  useEffect(() => {
+    if (screen !== "game" || answered) return;
+    if (qTimer <= 0) { handleAnswer(null); return; }
+    const t = setInterval(() => setQTimer(x => x - 1), 1000);
+    return () => clearInterval(t);
+  }, [screen, qTimer, answered]);
 
   function startGame(name) {
     setPlayerName(name);
@@ -511,7 +507,7 @@ useEffect(() => {
     startTime.current = Date.now();
   }
 
-const handleAnswer = useCallback((choice) => {
+  function handleAnswer(choice) {
     setSelected(choice ?? "__timeout__");
     let pts = 0;
     if (choice === q.correct) {
@@ -521,7 +517,7 @@ const handleAnswer = useCallback((choice) => {
     }
     setPointsEarned(pts);
     setScore(s => s + pts);
-  }, [q, qTimer]);
+  }
 
   function nextQuestion() {
     if (qIndex + 1 >= QUESTIONS.length) { finishGame(); return; }
@@ -531,7 +527,7 @@ const handleAnswer = useCallback((choice) => {
     setQTimer(30);
   }
 
-const finishGame = useCallback(() => {
+  function finishGame() {
     const elapsed = Math.round((Date.now() - startTime.current) / 1000);
     const finalScore = score;
     setLeaderboard(prev => {
@@ -539,7 +535,7 @@ const finishGame = useCallback(() => {
       return [...next, { name: playerName, score: finalScore, elapsed }];
     });
     setScreen("result");
-  }, [score, playerName]);
+  }
 
   function replay() {
     setScreen("login");
