@@ -635,7 +635,7 @@ export default function App() {
 // ============================================================
 const s = {
   // Login
-  loginWrap: { minHeight: "100vh", background: "#0a0a0f", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'Georgia', serif" },
+  loginWrap: { minHeight: "100vh", background: "#0a0a0f", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'Noto Sans', sans-serif" },
   loginCard: { display: "flex", flexDirection: "column", alignItems: "center", gap: 16, maxWidth: 420, width: "100%", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 24, padding: "40px 32px" },
   logoRow: { display: "flex", alignItems: "center", gap: 16, marginBottom: 8 },
   logoIcon: { fontSize: 52, lineHeight: 1 },
@@ -647,12 +647,12 @@ const s = {
   statLabel: { fontSize: 11, color: "#7c3aed", fontWeight: 600 },
   legendRow: { display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" },
   legendTag: { fontSize: 12, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "#9ca3af", padding: "3px 10px", borderRadius: 20 },
-  input: { width: "100%", maxWidth: 340, padding: "14px 18px", background: "rgba(255,255,255,0.06)", border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 12, color: "#f9fafb", fontSize: 15, outline: "none", fontFamily: "Georgia, serif", boxSizing: "border-box" },
-  startBtn: { background: "linear-gradient(135deg,#7c3aed,#6d28d9)", border: "none", borderRadius: 12, color: "#fff", fontSize: 16, fontWeight: 700, padding: "14px 40px", cursor: "pointer", fontFamily: "Georgia, serif", letterSpacing: 0.3 },
+  input: { width: "100%", maxWidth: 340, padding: "14px 18px", background: "rgba(255,255,255,0.06)", border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 12, color: "#f9fafb", fontSize: 15, outline: "none", fontFamily: "'Noto Sans', sans-serif", boxSizing: "border-box" },
+  startBtn: { background: "linear-gradient(135deg,#7c3aed,#6d28d9)", border: "none", borderRadius: 12, color: "#fff", fontSize: 16, fontWeight: 700, padding: "14px 40px", cursor: "pointer", fontFamily: "'Noto Sans', sans-serif", letterSpacing: 0.3 },
   hint: { fontSize: 12, color: "#4b5563", textAlign: "center", fontStyle: "italic" },
 
   // Game
-  gameWrap: { minHeight: "100vh", background: "#0a0a0f", color: "#f9fafb", fontFamily: "'Georgia', serif", display: "flex", flexDirection: "column" },
+  gameWrap: { minHeight: "100vh", background: "#0a0a0f", color: "#f9fafb", fontFamily: "'Noto Sans', sans-serif", display: "flex", flexDirection: "column" },
   topBar: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 20px", background: "rgba(0,0,0,0.4)", borderBottom: "1px solid rgba(255,255,255,0.06)", position: "sticky", top: 0, zIndex: 10 },
   topLeft: { display: "flex", alignItems: "center", gap: 10 },
   topCenter: { display: "flex", alignItems: "center" },
@@ -679,6 +679,6 @@ const s = {
   playerInfo: { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "14px 12px" },
 
   // Result
-  resultWrap: { minHeight: "100vh", background: "#0a0a0f", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "Georgia, serif" },
+  resultWrap: { minHeight: "100vh", background: "#0a0a0f", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "'Noto Sans', sans-serif" },
   resultCard: { display: "flex", flexDirection: "column", alignItems: "center", gap: 8, maxWidth: 400, width: "100%" },
 };
