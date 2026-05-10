@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Chessboard } from "react-chessboard";
 
 // ============================================================
@@ -485,29 +485,16 @@ export default function App() {
   const q = QUESTIONS[qIndex];
   const answered = selected !== null;
 
-  // Global 30-min countdown
-  useEffect(() => {
-    if (screen !== "game") return;
-    if (timeLeft <= 0) { finishGame(); return; }
-    const t = setInterval(() => setTimeLeft(x => x - 1), 1000);
-    return () => clearInterval(t);
-  }, [screen, timeLeft]);
+  const finishGame = useCallback(() => {
+    const elapsed = Math.round((Date.now() - startTime.current) / 1000);
+    setLeaderboard(prev => {
+      const next = prev.filter(e => e.name !== playerName);
+      return [...next, { name: playerName, score, elapsed }];
+    });
+    setScreen("result");
+  }, [playerName, score]);
 
-  // Per-question 30s countdown
-  useEffect(() => {
-    if (screen !== "game" || answered) return;
-    if (qTimer <= 0) { handleAnswer(null); return; }
-    const t = setInterval(() => setQTimer(x => x - 1), 1000);
-    return () => clearInterval(t);
-  }, [screen, qTimer, answered]);
-
-  function startGame(name) {
-    setPlayerName(name);
-    setScreen("game");
-    startTime.current = Date.now();
-  }
-
-  function handleAnswer(choice) {
+  const handleAnswer = useCallback((choice) => {
     setSelected(choice ?? "__timeout__");
     let pts = 0;
     if (choice === q.correct) {
@@ -517,6 +504,28 @@ export default function App() {
     }
     setPointsEarned(pts);
     setScore(s => s + pts);
+  }, [q, qTimer]);
+
+  // Global 30-min countdown
+  useEffect(() => {
+    if (screen !== "game") return;
+    if (timeLeft <= 0) { finishGame(); return; }
+    const t = setInterval(() => setTimeLeft(x => x - 1), 1000);
+    return () => clearInterval(t);
+  }, [screen, timeLeft, finishGame]);
+
+  // Per-question 30s countdown
+  useEffect(() => {
+    if (screen !== "game" || answered) return;
+    if (qTimer <= 0) { handleAnswer(null); return; }
+    const t = setInterval(() => setQTimer(x => x - 1), 1000);
+    return () => clearInterval(t);
+  }, [screen, qTimer, answered, handleAnswer]);
+
+  function startGame(name) {
+    setPlayerName(name);
+    setScreen("game");
+    startTime.current = Date.now();
   }
 
   function nextQuestion() {
@@ -525,16 +534,6 @@ export default function App() {
     setSelected(null);
     setPointsEarned(0);
     setQTimer(30);
-  }
-
-  function finishGame() {
-    const elapsed = Math.round((Date.now() - startTime.current) / 1000);
-    const finalScore = score;
-    setLeaderboard(prev => {
-      const next = prev.filter(e => e.name !== playerName);
-      return [...next, { name: playerName, score: finalScore, elapsed }];
-    });
-    setScreen("result");
   }
 
   function replay() {
